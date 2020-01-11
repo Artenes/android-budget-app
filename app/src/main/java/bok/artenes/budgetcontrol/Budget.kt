@@ -1,5 +1,12 @@
 package bok.artenes.budgetcontrol
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 import java.util.*
 
-data class Budget(val description: String, val value: Int, val id: String = UUID.randomUUID().toString())
+@Entity(tableName = "budgets")
+data class Budget(
+    val description: String,
+    val value: Int,
+    @PrimaryKey val uid: String = UUID.randomUUID().toString()
+)

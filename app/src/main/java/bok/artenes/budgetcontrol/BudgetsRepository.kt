@@ -1,25 +1,28 @@
 package bok.artenes.budgetcontrol
 
+import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
+import androidx.room.Room
+import java.util.concurrent.Executors
 
 object BudgetsRepository {
 
-    private val budgets = mutableListOf(
-        Budget("Descirption A", 9010),
-        Budget("Descirption B", 10050),
-        Budget("Descirption C", 11050)
-    ).also { it.reverse() }
+    private val executor = Executors.newSingleThreadExecutor()
+    private lateinit var database: BudgetsDatabase
 
-    private val budgetsLiveData = MutableLiveData(budgets)
+    fun initDatabase(context: Context) {
+        database = Room.databaseBuilder(context, BudgetsDatabase::class.java, "budgets")
+            .fallbackToDestructiveMigration().build()
+    }
 
-    fun getBudgets() : LiveData<List<Budget>> {
-        return budgetsLiveData as LiveData<List<Budget>>
+    fun getBudgets(): LiveData<List<Budget>> {
+        return database.budgetsDao().getAll()
     }
 
     fun save(budget: Budget) {
-        budgets.add(0, budget)
-        budgetsLiveData.value = budgets
+        executor.execute {
+            database.budgetsDao().insert(budget)
+        }
     }
 
 }

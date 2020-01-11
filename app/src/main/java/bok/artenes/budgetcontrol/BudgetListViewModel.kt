@@ -14,7 +14,7 @@ class BudgetListViewModel : ViewModel() {
         ) { list ->
             list.map { budget ->
                 val value = "R$${(budget.value / 100f)}"
-                BudgetItem(budget.id, budget.description, value)
+                BudgetItem(budget.uid, budget.description, value)
             }
         }
     }
