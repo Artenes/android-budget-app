@@ -3,18 +3,21 @@ package bok.artenes.budgetcontrol
 import java.text.NumberFormat
 import java.util.*
 
-class MoneyFormatter(private val locale: Locale) {
+class Money(initialValue: String) {
 
-    fun format(value: String): String {
-        val valueToFormat = stringToFloat(value)
+    private val value: Double
+
+    init {
+        value = stringToFloat(initialValue)
+    }
+
+    fun format(locale: Locale = Locale.getDefault()): String {
         val moneyFormat = NumberFormat.getCurrencyInstance(locale)
-        return moneyFormat.format(valueToFormat)
+        return moneyFormat.format(value)
     }
 
     private fun stringToFloat(number: String): Double {
-        TODO("add limit for max DOUBLE")
-        TODO("allow to add zeros ate the end, only trim at the start")
-        val onlyDigits = number.filter { it.isDigit() }.trim('0')
+        val onlyDigits = number.filter { it.isDigit() }.trimStart('0')
         return when {
             onlyDigits.isEmpty() -> 0.0
             onlyDigits.length == 1 -> ".0${onlyDigits}".toDouble()
