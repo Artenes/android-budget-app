@@ -2,5 +2,6 @@
     <string name="app_name">BudgetControl</string>
     <string name="description">Description</string>
     <string name="price">Price</string>
+    <string name="date">Date</string>
     <string name="save">Save</string>
 </resources>
