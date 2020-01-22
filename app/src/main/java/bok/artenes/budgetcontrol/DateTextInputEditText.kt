@@ -9,7 +9,6 @@ import androidx.appcompat.view.ContextThemeWrapper
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.textfield.TextInputEditText
-import java.text.DateFormat
 import java.util.*
 
 class DateTextInputEditText : TextInputEditText, View.OnClickListener,
@@ -39,8 +38,13 @@ class DateTextInputEditText : TextInputEditText, View.OnClickListener,
     }
 
     private fun setFormattedDateOnField(calendar: Calendar) {
-        val formatter = DateFormat.getDateInstance(DateFormat.SHORT)
-        val formattedDate = formatter.format(calendar.time)
+        val day = calendar.get(Calendar.DAY_OF_MONTH)
+        val month = calendar.get(Calendar.MONTH) + 1
+        val year = calendar.get(Calendar.YEAR)
+        val formattedDay = day.toString().padStart(2, '0')
+        val formattedMonth = month.toString().padStart(2, '0')
+        val formattedYear = year.toString()
+        val formattedDate = "$formattedDay/$formattedMonth/$formattedYear"
         setText(formattedDate)
     }
 
@@ -51,9 +55,8 @@ class DateTextInputEditText : TextInputEditText, View.OnClickListener,
     }
 
     override fun onPositiveButtonClick(selection: Long) {
-        val calendar = Calendar.getInstance()
-        //TODO: selection is one day off
-        calendar.time = Date(selection)
+        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        calendar.timeInMillis = selection
         date = calendar
     }
 
