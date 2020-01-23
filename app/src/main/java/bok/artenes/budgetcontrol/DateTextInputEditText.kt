@@ -8,15 +8,19 @@ import android.util.TypedValue
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.view.ContextThemeWrapper
+import com.google.android.material.datepicker.CalendarConstraints
 import com.google.android.material.datepicker.MaterialDatePicker
 import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener
 import com.google.android.material.textfield.TextInputEditText
+import java.text.DateFormat
 import java.util.*
 
 class DateTextInputEditText : TextInputEditText, View.OnClickListener,
     MaterialPickerOnPositiveButtonClickListener<Long> {
 
     private lateinit var _date: Calendar
+
+    private val timezone = TimeZone.getTimeZone("UTC")
 
     var date: Calendar
         get() = _date
@@ -35,13 +39,9 @@ class DateTextInputEditText : TextInputEditText, View.OnClickListener,
     }
 
     private fun setFormattedDateOnField(calendar: Calendar) {
-        val day = calendar.get(Calendar.DAY_OF_MONTH)
-        val month = calendar.get(Calendar.MONTH) + 1
-        val year = calendar.get(Calendar.YEAR)
-        val formattedDay = day.toString().padStart(2, '0')
-        val formattedMonth = month.toString().padStart(2, '0')
-        val formattedYear = year.toString()
-        val formattedDate = "$formattedDay/$formattedMonth/$formattedYear"
+        val formatter = DateFormat.getDateInstance(DateFormat.SHORT)
+        formatter.timeZone = timezone
+        val formattedDate = formatter.format(calendar.time)
         setText(formattedDate)
     }
 
@@ -71,17 +71,21 @@ class DateTextInputEditText : TextInputEditText, View.OnClickListener,
     }
 
     private fun makePicker(initialTime: Long): MaterialDatePicker<Long> {
+        val calendarBuilder = CalendarConstraints.Builder()
+        calendarBuilder.setStart(initialTime)
+        val calendar = calendarBuilder.build()
+        val typedValue = TypedValue()
+        context.theme.resolveAttribute(R.attr.materialCalendarFullscreenTheme, typedValue, true)
         val builder = MaterialDatePicker.Builder.datePicker()
         builder.setSelection(initialTime)
         builder.setTitleText(R.string.select_a_date)
-        val typedValue = TypedValue()
-        context.theme.resolveAttribute(R.attr.materialCalendarFullscreenTheme, typedValue, true)
+        builder.setCalendarConstraints(calendar)
         builder.setTheme(typedValue.data)
         return builder.build()
     }
 
     private fun makeUTCCalendar(timestamp: Long): Calendar {
-        val calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"))
+        val calendar = Calendar.getInstance(timezone)
         calendar.clear()
         calendar.timeInMillis = timestamp
         return calendar
