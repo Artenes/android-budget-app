@@ -26,6 +26,7 @@ class BudgetListAdapter :
         fun bind(budget: BudgetItem) {
             view.textViewDescription.text = budget.description
             view.textViewValue.text = budget.value
+            view.textViewDate.text = budget.date
         }
 
     }

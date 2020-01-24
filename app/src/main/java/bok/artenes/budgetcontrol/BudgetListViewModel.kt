@@ -3,6 +3,8 @@ package bok.artenes.budgetcontrol
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Transformations
 import androidx.lifecycle.ViewModel
+import java.text.DateFormat
+import java.util.*
 
 class BudgetListViewModel : ViewModel() {
 
@@ -14,7 +16,10 @@ class BudgetListViewModel : ViewModel() {
         ) { list ->
             list.map { budget ->
                 val value = "R$${(budget.value / 100f)}"
-                BudgetItem(budget.uid, budget.description, value)
+                val formatter = DateFormat.getDateInstance(DateFormat.SHORT)
+                formatter.timeZone = TimeZone.getTimeZone("UTC")
+                val formattedDate = formatter.format(Date(budget.date))
+                BudgetItem(budget.uid, budget.description, value, formattedDate)
             }
         }
     }

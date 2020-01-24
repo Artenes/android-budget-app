@@ -31,7 +31,8 @@ class BudgetCreatorFragment : Fragment() {
         buttonSave.setOnClickListener {
             viewModel.save(
                 textInputDescription.text.toString(),
-                textInputPrice.text.toString()
+                textInputPrice.value,
+                textInputDate.date
             )
         }
     }

@@ -7,6 +7,7 @@ import java.util.*
 @Entity(tableName = "budgets")
 data class Budget(
     val description: String,
-    val value: Int,
+    val value: Long,
+    val date: Long,
     @PrimaryKey val uid: String = UUID.randomUUID().toString()
 )
