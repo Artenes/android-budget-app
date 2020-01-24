@@ -4,9 +4,15 @@ import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
+import bok.artenes.budgetcontrol.money.MoneyFormatter
+import bok.artenes.budgetcontrol.money.MoneyParser
 import com.google.android.material.textfield.TextInputEditText
 
 class MoneyTextInputEditText : TextInputEditText, TextWatcher {
+
+    private val parser = MoneyParser()
+
+    private val formatter = MoneyFormatter()
 
     lateinit var value: Money
         private set
@@ -26,12 +32,12 @@ class MoneyTextInputEditText : TextInputEditText, TextWatcher {
     }
 
     private fun setValue(value: String) {
-        val money = Money(value)
-        var formattedValue = money.format()
+        val money = parser.parse(value)
+        var formattedValue = formatter.format(money)
         if (formattedValue.length <= MAX_CHARACTERS) {
             this.value = money
         } else {
-            formattedValue = this.value.format()
+            formattedValue = formatter.format(this.value)
         }
         setText(formattedValue)
         setSelection(formattedValue.length)
