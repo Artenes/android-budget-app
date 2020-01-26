@@ -1,6 +1,5 @@
 package bok.artenes.budgetcontrol.money
 
-import bok.artenes.budgetcontrol.Money
 import java.text.NumberFormat
 import java.util.*
 

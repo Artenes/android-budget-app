@@ -1,11 +1,9 @@
-package bok.artenes.budgetcontrol
+package bok.artenes.budgetcontrol.money
 
 import android.content.Context
 import android.text.Editable
 import android.text.TextWatcher
 import android.util.AttributeSet
-import bok.artenes.budgetcontrol.money.MoneyFormatter
-import bok.artenes.budgetcontrol.money.MoneyParser
 import com.google.android.material.textfield.TextInputEditText
 
 class MoneyTextInputEditText : TextInputEditText, TextWatcher {

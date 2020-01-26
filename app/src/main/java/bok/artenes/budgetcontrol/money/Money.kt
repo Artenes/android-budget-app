@@ -1,4 +1,4 @@
-package bok.artenes.budgetcontrol
+package bok.artenes.budgetcontrol.money
 
 class Money(private val value: Long) {
 

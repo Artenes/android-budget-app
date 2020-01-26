@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/price">
 
-        <bok.artenes.budgetcontrol.MoneyTextInputEditText
+        <bok.artenes.budgetcontrol.money.MoneyTextInputEditText
             android:id="@+id/textInputPrice"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/date">
 
-        <bok.artenes.budgetcontrol.DateTextInputEditText
+        <bok.artenes.budgetcontrol.date.DateTextInputEditText
             android:id="@+id/textInputDate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />

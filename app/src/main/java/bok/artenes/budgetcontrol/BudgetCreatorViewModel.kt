@@ -3,6 +3,7 @@ package bok.artenes.budgetcontrol
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import bok.artenes.budgetcontrol.money.Money
 import java.util.*
 
 class BudgetCreatorViewModel : ViewModel() {

@@ -1,7 +1,5 @@
 package bok.artenes.budgetcontrol.money
 
-import bok.artenes.budgetcontrol.Money
-
 class MoneyParser {
 
     fun parse(number: String): Money {
