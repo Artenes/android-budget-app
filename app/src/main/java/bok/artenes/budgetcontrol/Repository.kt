@@ -3,15 +3,16 @@ package bok.artenes.budgetcontrol
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import bok.artenes.budgetcontrol.account.Account
 import java.util.concurrent.Executors
 
-object BudgetsRepository {
+object Repository {
 
     private val executor = Executors.newSingleThreadExecutor()
-    private lateinit var database: BudgetsDatabase
+    private lateinit var database: AppDatabase
 
     fun initDatabase(context: Context) {
-        database = Room.databaseBuilder(context, BudgetsDatabase::class.java, "budgets")
+        database = Room.databaseBuilder(context, AppDatabase::class.java, "budgets")
             .fallbackToDestructiveMigration().build()
     }
 
@@ -19,9 +20,19 @@ object BudgetsRepository {
         return database.budgetsDao().getAll()
     }
 
-    fun save(budget: Budget) {
+    fun saveBudget(budget: Budget) {
         executor.execute {
             database.budgetsDao().insert(budget)
+        }
+    }
+
+    fun getAccounts(): LiveData<List<Account>> {
+        return database.accountsDao().getAll()
+    }
+
+    fun saveAccount(account: Account) {
+        executor.execute {
+            database.accountsDao().insert(account)
         }
     }
 

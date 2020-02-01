@@ -16,7 +16,7 @@ class BudgetCreatorViewModel : ViewModel() {
         val priceInCents = price.asCents()
         val dateInMilliseconds = date.timeInMillis
         val budget = Budget(description, priceInCents, dateInMilliseconds)
-        BudgetsRepository.save(budget)
+        Repository.saveBudget(budget)
         _saveFinished.value = true
     }
 

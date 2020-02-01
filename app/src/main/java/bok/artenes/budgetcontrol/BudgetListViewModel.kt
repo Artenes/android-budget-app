@@ -12,7 +12,7 @@ class BudgetListViewModel : ViewModel() {
 
     init {
         budgets = Transformations.map(
-            BudgetsRepository.getBudgets()
+            Repository.getBudgets()
         ) { list ->
             list.map { budget ->
                 val value = "R$${(budget.value / 100f)}"
