@@ -13,6 +13,8 @@ class AccountListAdapter : ListAdapter<AccountItem, AccountListAdapter.AccountVi
     DIFF_CALLBACK
 ) {
 
+    var accountListListener: AccountListListener? = null
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_account, parent, false)
         return AccountViewHolder(view)
@@ -23,13 +25,23 @@ class AccountListAdapter : ListAdapter<AccountItem, AccountListAdapter.AccountVi
         holder.bind(account)
     }
 
-    class AccountViewHolder(private val view: View) : RecyclerView.ViewHolder(view) {
+    inner class AccountViewHolder(private val view: View) : RecyclerView.ViewHolder(view),
+        View.OnClickListener {
 
         fun bind(account: AccountItem) {
             view.textViewName.text = account.name
             view.textViewBalance.text = account.balance
+            view.setOnClickListener(this)
         }
 
+        override fun onClick(v: View?) {
+            val account = getItem(adapterPosition)
+            accountListListener?.onAccountClicked(account)
+        }
+    }
+
+    interface AccountListListener {
+        fun onAccountClicked(account: AccountItem)
     }
 
     companion object {

@@ -1,3 +1,9 @@
 package bok.artenes.budgetcontrol.account
 
-data class AccountItem(val id: String, val name: String, val balance: String)
+import bok.artenes.budgetcontrol.money.MoneyFormatter
+
+class AccountItem(account: Account) {
+    val id: String = account.uid
+    val name: String = account.name
+    val balance: String = MoneyFormatter().format(account.balance)
+}

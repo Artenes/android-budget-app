@@ -12,7 +12,7 @@ import bok.artenes.budgetcontrol.R
 import kotlinx.android.synthetic.main.fragment_account_list.view.*
 import kotlinx.android.synthetic.main.fragment_budget_list.view.recyclerView
 
-class AccountListFragment : Fragment() {
+class AccountListFragment : Fragment(), AccountListAdapter.AccountListListener {
 
     private lateinit var adapter: AccountListAdapter
     private lateinit var viewModel: AccountListViewModel
@@ -28,6 +28,7 @@ class AccountListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         viewModel = ViewModelProviders.of(this).get(AccountListViewModel::class.java)
         adapter = AccountListAdapter()
+        adapter.accountListListener = this
         view.recyclerView.layoutManager = LinearLayoutManager(view.context)
         view.recyclerView.adapter = adapter
         viewModel.accounts.observe(viewLifecycleOwner, Observer<List<AccountItem>> {
@@ -37,4 +38,7 @@ class AccountListFragment : Fragment() {
         })
     }
 
+    override fun onAccountClicked(account: AccountItem) {
+        AccountViewActivity.start(context!!, account.id)
+    }
 }

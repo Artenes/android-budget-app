@@ -12,7 +12,6 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        Repository.initDatabase(applicationContext)
         setContentView(R.layout.activity_main)
         floatingActionButton.setOnClickListener {
             startActivity(Intent(this, BudgetCreatorActivity::class.java))

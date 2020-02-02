@@ -11,7 +11,7 @@ import bok.artenes.budgetcontrol.R
 import kotlinx.android.synthetic.main.fragment_account_view.*
 import kotlinx.android.synthetic.main.fragment_budget_creator.buttonSave
 
-class AccountViewFragment : Fragment() {
+class AccountViewFragment(private val id: String?) : Fragment() {
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -22,7 +22,13 @@ class AccountViewFragment : Fragment() {
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        val viewModel = ViewModelProviders.of(this).get(AccountViewViewModel::class.java)
+        val factory = AccountViewViewModel.Factory(id)
+        val viewModel = ViewModelProviders.of(this, factory).get(AccountViewViewModel::class.java)
+
+        viewModel.account.observe(viewLifecycleOwner, Observer {
+            textInputName.setText(it.name)
+            textInputBalance.setText(it.balance)
+        })
 
         viewModel.saveFinished.observe(viewLifecycleOwner, Observer {
             if (it) {
@@ -37,4 +43,5 @@ class AccountViewFragment : Fragment() {
             )
         }
     }
+
 }

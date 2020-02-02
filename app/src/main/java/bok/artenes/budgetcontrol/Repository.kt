@@ -26,12 +26,19 @@ object Repository {
         }
     }
 
+    fun getAccount(id: String): Account? {
+        return database.accountsDao().getAccount(id)
+    }
+
     fun getAccounts(): LiveData<List<Account>> {
         return database.accountsDao().getAll()
     }
 
     fun saveAccount(account: Account) {
-        executor.execute {
+        val exists = database.accountsDao().getAccount(account.uid) != null
+        if (exists) {
+            database.accountsDao().update(account)
+        } else {
             database.accountsDao().insert(account)
         }
     }

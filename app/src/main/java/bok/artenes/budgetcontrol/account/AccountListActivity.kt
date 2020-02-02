@@ -1,6 +1,5 @@
 package bok.artenes.budgetcontrol.account
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import bok.artenes.budgetcontrol.R
@@ -12,7 +11,7 @@ class AccountListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_account_list)
         floatingActionButton.setOnClickListener {
-            startActivity(Intent(this, AccountViewActivity::class.java))
+            AccountViewActivity.start(this)
         }
     }
 }
