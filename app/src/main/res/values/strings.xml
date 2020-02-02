@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">BudgetControl</string>
     <string name="description">Description</string>
+    <string name="name">Name</string>
     <string name="price">Price</string>
+    <string name="balance">Balance</string>
     <string name="date">Date</string>
     <string name="save">Save</string>
     <string name="select_a_date">Select a date</string>
