@@ -9,11 +9,8 @@ import androidx.recyclerview.widget.RecyclerView
 import bok.artenes.budgetcontrol.R
 import kotlinx.android.synthetic.main.item_account.view.*
 
-class AccountListAdapter : ListAdapter<AccountItem, AccountListAdapter.AccountViewHolder>(
-    DIFF_CALLBACK
-) {
-
-    var accountListListener: AccountListListener? = null
+class AccountListAdapter(private val listener: AccountListListener) :
+    ListAdapter<AccountItem, AccountListAdapter.AccountViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AccountViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_account, parent, false)
@@ -36,7 +33,7 @@ class AccountListAdapter : ListAdapter<AccountItem, AccountListAdapter.AccountVi
 
         override fun onClick(v: View?) {
             val account = getItem(adapterPosition)
-            accountListListener?.onAccountClicked(account)
+            listener.onAccountClicked(account)
         }
     }
 
