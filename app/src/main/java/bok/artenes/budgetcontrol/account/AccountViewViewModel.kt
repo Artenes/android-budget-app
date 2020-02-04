@@ -9,40 +9,40 @@ import bok.artenes.budgetcontrol.money.Money
 import java.util.*
 import java.util.concurrent.Executors
 
-class AccountViewViewModel(val id: String?) : ViewModel() {
+class AccountViewViewModel(val uid: String?) : ViewModel() {
 
     private val executor = Executors.newSingleThreadExecutor()
 
-    private val _saveFinished = MutableLiveData<Boolean>(false)
+    val name = MutableLiveData<String>()
+
+    val balance = MutableLiveData<Money>()
+
+    private val _saveFinished = MutableLiveData<Boolean>()
     val saveFinished: LiveData<Boolean>
         get() = _saveFinished
 
-    private val _account = MutableLiveData<AccountItem>()
-    val account: LiveData<AccountItem>
-        get() = _account
-
     init {
-        if (id != null) {
+        if (uid != null) {
             executor.execute {
-                val account = Repository.getAccount(id)!!
-                val item = AccountItem(account)
-                _account.postValue(item)
+                val account = Repository.getAccount(uid)!!
+                name.postValue(account.name)
+                balance.postValue(account.balance)
             }
         }
     }
 
-    fun save(name: String, balance: Money) {
+    fun save() {
         executor.execute {
             val account: Account =
-                if (id != null) {
-                    val oldAccount = Repository.getAccount(id)!!
+                if (uid != null) {
+                    val oldAccount = Repository.getAccount(uid)!!
                     oldAccount.copy(
-                        name = name,
-                        balance = balance,
+                        name = name.value!!,
+                        balance = balance.value!!,
                         updateDate = Calendar.getInstance()
                     )
                 } else {
-                    Account(name = name, balance = balance)
+                    Account(name = name.value!!, balance = balance.value!!)
                 }
             Repository.saveAccount(account)
             _saveFinished.postValue(true)

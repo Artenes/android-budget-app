@@ -8,37 +8,37 @@ import com.google.android.material.textfield.TextInputEditText
 
 class MoneyTextInputEditText : TextInputEditText, TextWatcher {
 
+    var value: Money = Money(0)
+        set(value) {
+            var formattedValue = formatter.format(value)
+            if (formattedValue.length <= MAX_CHARACTERS) {
+                field = value
+                listener?.onValueChanged(value)
+            } else {
+                formattedValue = formatter.format(this.value)
+            }
+            setText(formattedValue)
+            setSelection(formattedValue.length)
+        }
+
+    var listener: OnValueChangeListener? = null
+
     private val parser = MoneyParser()
 
     private val formatter = MoneyFormatter()
 
-    lateinit var value: Money
-        private set
-
     constructor(context: Context) : super(context)
 
     constructor(context: Context, attributeSet: AttributeSet) : super(context, attributeSet) {
-        val value = if (text?.isNotEmpty() == true) text.toString() else "0"
-        setValue(value)
+        val rawValue = if (text?.isNotEmpty() == true) text.toString() else "0"
+        value = parser.parse(rawValue)
         addTextChangedListener(this)
     }
 
     override fun afterTextChanged(value: Editable) {
         removeTextChangedListener(this)
-        setValue(value.toString())
+        this.value = parser.parse(value.toString())
         addTextChangedListener(this)
-    }
-
-    private fun setValue(value: String) {
-        val money = parser.parse(value)
-        var formattedValue = formatter.format(money)
-        if (formattedValue.length <= MAX_CHARACTERS) {
-            this.value = money
-        } else {
-            formattedValue = formatter.format(this.value)
-        }
-        setText(formattedValue)
-        setSelection(formattedValue.length)
     }
 
     override fun onTextChanged(
@@ -57,4 +57,9 @@ class MoneyTextInputEditText : TextInputEditText, TextWatcher {
     companion object {
         const val MAX_CHARACTERS = 20
     }
+
+    interface OnValueChangeListener {
+        fun onValueChanged(newValue: Money)
+    }
+
 }
