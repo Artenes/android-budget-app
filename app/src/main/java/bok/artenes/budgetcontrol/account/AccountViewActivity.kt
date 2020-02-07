@@ -7,19 +7,23 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import bok.artenes.budgetcontrol.ConfirmDeleteDialogFragment
 import bok.artenes.budgetcontrol.R
 import bok.artenes.budgetcontrol.databinding.ActivityAccountViewBinding
 
-class AccountViewActivity : AppCompatActivity() {
+class AccountViewActivity : AppCompatActivity(),
+    ConfirmDeleteDialogFragment.OnConfirmDeleteListener {
 
     private val accountUid: String?
         get() = intent?.extras?.getString(EXTRA_UID)
 
+    private val viewModel by lazy {
+        val factory = AccountViewViewModel.Factory(accountUid)
+        ViewModelProviders.of(this, factory).get(AccountViewViewModel::class.java)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        val factory = AccountViewViewModel.Factory(accountUid)
-        val viewModel = ViewModelProviders.of(this, factory).get(AccountViewViewModel::class.java)
 
         val binding = DataBindingUtil.setContentView<ActivityAccountViewBinding>(
             this,
@@ -29,11 +33,29 @@ class AccountViewActivity : AppCompatActivity() {
         binding.viewModel = viewModel
 
         viewModel.saveFinished.observe(this, Observer { finish() })
+        viewModel.confirmDeleteDialog.observe(this, Observer {
+            val dialog = ConfirmDeleteDialogFragment()
+            dialog.listener = this
+            dialog.show(supportFragmentManager, DIALOG_DELETE_TAG)
+        })
+
+        restoreDeleteConfirmedListener()
+    }
+
+    override fun onDeleteConfirmed() {
+        viewModel.delete()
+    }
+
+    private fun restoreDeleteConfirmedListener() {
+        val dialog = supportFragmentManager
+            .findFragmentByTag(DIALOG_DELETE_TAG) as ConfirmDeleteDialogFragment?
+        dialog?.listener = this
     }
 
     companion object {
 
         private const val EXTRA_UID = "UID"
+        private const val DIALOG_DELETE_TAG = "DIALOG_DELETE_TAG"
 
         fun start(context: Context, id: String? = null) {
             val intent = Intent(context, AccountViewActivity::class.java)

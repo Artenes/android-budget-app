@@ -4,6 +4,8 @@
 
     <data>
 
+        <import type="android.view.View" />
+
         <variable
             name="viewModel"
             type="bok.artenes.budgetcontrol.account.AccountViewViewModel" />
@@ -45,8 +47,16 @@
             android:id="@+id/buttonSave"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/save"
-            android:onClick="@{() -> viewModel.save()}"/>
+            android:onClick="@{() -> viewModel.save()}"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.confirmDelete()}"
+            android:text="@string/delete"
+            android:visibility="@{viewModel.uid != null ? View.VISIBLE : View.GONE}" />
 
     </LinearLayout>
 

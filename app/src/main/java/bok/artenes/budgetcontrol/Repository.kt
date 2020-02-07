@@ -43,4 +43,8 @@ object Repository {
         }
     }
 
+    fun deleteAccount(account: Account) {
+        database.accountsDao().delete(account)
+    }
+
 }

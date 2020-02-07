@@ -19,4 +19,7 @@ interface AccountsDao {
     @Update
     fun update(account: Account)
 
+    @Delete
+    fun delete(account: Account)
+
 }

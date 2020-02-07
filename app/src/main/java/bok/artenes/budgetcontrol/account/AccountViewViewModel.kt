@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import bok.artenes.budgetcontrol.Repository
+import bok.artenes.budgetcontrol.SingleNotifyLiveData
 import bok.artenes.budgetcontrol.money.Money
 import java.util.*
 import java.util.concurrent.Executors
@@ -17,9 +18,13 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
 
     val balance = MutableLiveData<Money>()
 
-    private val _saveFinished = MutableLiveData<Boolean>()
-    val saveFinished: LiveData<Boolean>
+    private val _saveFinished = SingleNotifyLiveData<Void?>()
+    val saveFinished: LiveData<Void?>
         get() = _saveFinished
+
+    private val _confirmDeleteDialog = SingleNotifyLiveData<Void?>()
+    val confirmDeleteDialog: LiveData<Void?>
+        get() = _confirmDeleteDialog
 
     init {
         if (uid != null) {
@@ -45,7 +50,21 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
                     Account(name = name.value!!, balance = balance.value!!)
                 }
             Repository.saveAccount(account)
-            _saveFinished.postValue(true)
+            _saveFinished.postValue(null)
+        }
+    }
+
+    fun confirmDelete() {
+        _confirmDeleteDialog.setValue(null)
+    }
+
+    fun delete() {
+        executor.execute {
+            if (uid != null) {
+                val account = Repository.getAccount(uid) as Account
+                Repository.deleteAccount(account)
+                _saveFinished.postValue(null)
+            }
         }
     }
 
