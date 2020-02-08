@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProviders
 import bok.artenes.budgetcontrol.ConfirmDeleteDialogFragment
 import bok.artenes.budgetcontrol.R
 import bok.artenes.budgetcontrol.databinding.ActivityBudgetViewBinding
-import kotlinx.android.synthetic.main.activity_budget_view.*
 
 class BudgetViewActivity : AppCompatActivity(),
     ConfirmDeleteDialogFragment.OnConfirmDeleteListener {
@@ -36,7 +35,7 @@ class BudgetViewActivity : AppCompatActivity(),
 
         viewModel.finishEdit.observe(this, Observer { finish() })
         viewModel.confirmDeleteDialog.observe(this, Observer {
-            val dialog = ConfirmDeleteDialogFragment()
+            val dialog = ConfirmDeleteDialogFragment.make(getString(R.string.delete_budget))
             dialog.listener = this
             dialog.show(supportFragmentManager, DIALOG_DELETE_TAG)
         })

@@ -34,7 +34,10 @@ class AccountViewActivity : AppCompatActivity(),
 
         viewModel.finishEdit.observe(this, Observer { finish() })
         viewModel.confirmDeleteDialog.observe(this, Observer {
-            val dialog = ConfirmDeleteDialogFragment()
+            val dialog = ConfirmDeleteDialogFragment.make(
+                getString(R.string.delete_account),
+                getString(R.string.budgets_associated_with_this_account)
+            )
             dialog.listener = this
             dialog.show(supportFragmentManager, DIALOG_DELETE_TAG)
         })
