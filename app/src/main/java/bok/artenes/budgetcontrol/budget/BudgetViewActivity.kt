@@ -41,10 +41,6 @@ class BudgetViewActivity : AppCompatActivity(),
             dialog.show(supportFragmentManager, DIALOG_DELETE_TAG)
         })
 
-        buttonSave.setOnClickListener {
-            viewModel.save()
-        }
-
         restoreDeleteConfirmedListener()
     }
 
