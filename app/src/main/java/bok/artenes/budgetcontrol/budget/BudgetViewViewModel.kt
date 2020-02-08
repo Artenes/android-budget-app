@@ -116,7 +116,7 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
             _dateError.postValue(R.string.required_field)
         }
 
-        return isDateValid && isPriceValid && isDateValid
+        return isDescriptionValid && isPriceValid && isDateValid
     }
 
     class Factory(private val uid: String?) : ViewModelProvider.Factory {
