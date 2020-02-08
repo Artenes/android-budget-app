@@ -44,10 +44,18 @@ class BudgetViewActivity : AppCompatActivity(),
         buttonSave.setOnClickListener {
             viewModel.save()
         }
+
+        restoreDeleteConfirmedListener()
     }
 
     override fun onDeleteConfirmed() {
         viewModel.delete()
+    }
+
+    private fun restoreDeleteConfirmedListener() {
+        val dialog = supportFragmentManager
+            .findFragmentByTag(DIALOG_DELETE_TAG) as ConfirmDeleteDialogFragment?
+        dialog?.listener = this
     }
 
     companion object {
