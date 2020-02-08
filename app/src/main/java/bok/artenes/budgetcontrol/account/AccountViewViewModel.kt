@@ -21,9 +21,6 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
         get() = _nameError
 
     val balance = MutableLiveData<Money>()
-    private val _balanceError = MutableLiveData<Int>()
-    val balanceError: LiveData<Int>
-        get() = _balanceError
 
     private val _finishEdit = SingleNotifyLiveData<Void?>()
     val finishEdit: LiveData<Void?>
@@ -42,7 +39,6 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
             }
         }
         name.observeForever { _nameError.value = null }
-        balance.observeForever { _balanceError.value = null }
     }
 
     fun isNew(): Boolean {
@@ -90,20 +86,14 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
 
     private fun isValid(): Boolean {
         val name = this.name.value
-        val balance = this.balance.value
 
         val isNameValid = name?.isNotEmpty() ?: false
-        val isBalanceValid = balance?.isNotZero() ?: false
 
         if (!isNameValid) {
             _nameError.postValue(R.string.required_field)
         }
 
-        if (!isBalanceValid) {
-            _balanceError.postValue(R.string.required_field)
-        }
-
-        return isNameValid && isBalanceValid
+        return isNameValid
     }
 
     class Factory(private val id: String?) : ViewModelProvider.Factory {
