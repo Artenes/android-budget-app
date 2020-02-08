@@ -2,6 +2,7 @@ package bok.artenes.budgetcontrol.money
 
 import android.content.Context
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.util.AttributeSet
 import com.google.android.material.textfield.TextInputEditText
@@ -33,6 +34,7 @@ class MoneyTextInputEditText : TextInputEditText, TextWatcher {
         val rawValue = if (text?.isNotEmpty() == true) text.toString() else "0"
         value = parser.parse(rawValue)
         addTextChangedListener(this)
+        inputType = InputType.TYPE_CLASS_NUMBER
     }
 
     override fun afterTextChanged(value: Editable) {
