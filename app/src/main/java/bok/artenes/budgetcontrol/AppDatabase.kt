@@ -4,6 +4,7 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import bok.artenes.budgetcontrol.account.Account
+import bok.artenes.budgetcontrol.budget.Budget
 
 @Database(entities = [Budget::class, Account::class], version = 1)
 @TypeConverters(Converters::class)

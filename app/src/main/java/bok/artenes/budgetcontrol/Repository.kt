@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
 import bok.artenes.budgetcontrol.account.Account
+import bok.artenes.budgetcontrol.budget.Budget
 import java.util.concurrent.Executors
 
 object Repository {

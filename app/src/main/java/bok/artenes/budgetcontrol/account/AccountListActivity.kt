@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import bok.artenes.budgetcontrol.R
 import kotlinx.android.synthetic.main.activity_account_list.*
-import kotlinx.android.synthetic.main.activity_main.floatingActionButton
 
 class AccountListActivity : AppCompatActivity(), AccountListAdapter.AccountListListener {
 
