@@ -25,9 +25,9 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
     val balanceError: LiveData<Int>
         get() = _balanceError
 
-    private val _saveFinished = SingleNotifyLiveData<Void?>()
-    val saveFinished: LiveData<Void?>
-        get() = _saveFinished
+    private val _finishEdit = SingleNotifyLiveData<Void?>()
+    val finishEdit: LiveData<Void?>
+        get() = _finishEdit
 
     private val _confirmDeleteDialog = SingleNotifyLiveData<Void?>()
     val confirmDeleteDialog: LiveData<Void?>
@@ -36,7 +36,7 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
     init {
         if (uid != null) {
             executor.execute {
-                val account = Repository.getAccount(uid)!!
+                val account = Repository.getAccount(uid) as Account
                 name.postValue(account.name)
                 balance.postValue(account.balance)
             }
@@ -46,21 +46,26 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
     }
 
     fun save() {
-        if (isValid()) {
-            executor.execute {
+
+        executor.execute {
+            if (isValid()) {
+                val name = this.name.value as String
+                val balance = this.balance.value as Money
+
                 val account: Account =
                     if (uid != null) {
-                        val oldAccount = Repository.getAccount(uid)!!
+                        val oldAccount = Repository.getAccount(uid) as Account
                         oldAccount.copy(
-                            name = name.value!!,
-                            balance = balance.value!!,
-                            updateDate = Calendar.getInstance()
+                            name = name,
+                            balance = balance,
+                            updatedAt = Calendar.getInstance()
                         )
                     } else {
-                        Account(name = name.value!!, balance = balance.value!!)
+                        Account(name = name, balance = balance)
                     }
+
                 Repository.saveAccount(account)
-                _saveFinished.postValue(null)
+                _finishEdit.postValue(null)
             }
         }
     }
@@ -74,7 +79,7 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
             if (uid != null) {
                 val account = Repository.getAccount(uid) as Account
                 Repository.deleteAccount(account)
-                _saveFinished.postValue(null)
+                _finishEdit.postValue(null)
             }
         }
     }
@@ -87,11 +92,11 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
         val isBalanceValid = balance?.isNotZero() ?: false
 
         if (!isNameValid) {
-            _nameError.value = R.string.required_field
+            _nameError.postValue(R.string.required_field)
         }
 
         if (!isBalanceValid) {
-            _balanceError.value = R.string.required_field
+            _balanceError.postValue(R.string.required_field)
         }
 
         return isNameValid && isBalanceValid

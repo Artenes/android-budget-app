@@ -34,7 +34,7 @@ class BudgetViewActivity : AppCompatActivity(),
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
 
-        viewModel.saveFinished.observe(this, Observer { finish() })
+        viewModel.finishEdit.observe(this, Observer { finish() })
         viewModel.confirmDeleteDialog.observe(this, Observer {
             val dialog = ConfirmDeleteDialogFragment()
             dialog.listener = this

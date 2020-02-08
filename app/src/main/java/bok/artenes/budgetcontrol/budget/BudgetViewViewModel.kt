@@ -30,9 +30,9 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
     val dateError: LiveData<Int>
         get() = _dateError
 
-    private val _saveFinished = SingleNotifyLiveData<Void?>()
-    val saveFinished: LiveData<Void?>
-        get() = _saveFinished
+    private val _finishEdit = SingleNotifyLiveData<Void?>()
+    val finishEdit: LiveData<Void?>
+        get() = _finishEdit
 
     private val _confirmDeleteDialog = SingleNotifyLiveData<Void?>()
     val confirmDeleteDialog: LiveData<Void?>
@@ -76,7 +76,7 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
                 }
 
                 Repository.saveBudget(budget)
-                _saveFinished.postValue(null)
+                _finishEdit.postValue(null)
             }
         }
     }
@@ -90,7 +90,7 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
             if (uid != null) {
                 val budget = Repository.getBudget(uid) as Budget
                 Repository.deleteBudget(budget)
-                _saveFinished.postValue(null)
+                _finishEdit.postValue(null)
             }
         }
     }

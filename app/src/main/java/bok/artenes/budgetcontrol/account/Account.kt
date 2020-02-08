@@ -10,6 +10,6 @@ data class Account(
     @PrimaryKey val uid: String = UUID.randomUUID().toString(),
     val name: String,
     val balance: Money,
-    val createDate: Calendar = Calendar.getInstance(),
-    val updateDate: Calendar = Calendar.getInstance()
+    val createdAt: Calendar = Calendar.getInstance(),
+    val updatedAt: Calendar = Calendar.getInstance()
 )
