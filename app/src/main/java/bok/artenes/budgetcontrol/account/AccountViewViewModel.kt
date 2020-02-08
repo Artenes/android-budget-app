@@ -45,6 +45,10 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
         balance.observeForever { _balanceError.value = null }
     }
 
+    fun isNew(): Boolean {
+        return uid == null
+    }
+
     fun save() {
 
         executor.execute {
