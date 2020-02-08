@@ -1,4 +1,5 @@
 # TODO
+- validate fields
 - Account CRUD - 1 week
 - Associate account in budget - 1 day
 - Choose if it is income or spense in budget - 1 day

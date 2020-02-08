@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import bok.artenes.budgetcontrol.R
 import bok.artenes.budgetcontrol.Repository
 import bok.artenes.budgetcontrol.SingleNotifyLiveData
 import bok.artenes.budgetcontrol.money.Money
@@ -15,8 +16,14 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
     private val executor = Executors.newSingleThreadExecutor()
 
     val name = MutableLiveData<String>()
+    private val _nameError = MutableLiveData<Int>()
+    val nameError: LiveData<Int>
+        get() = _nameError
 
     val balance = MutableLiveData<Money>()
+    private val _balanceError = MutableLiveData<Int>()
+    val balanceError: LiveData<Int>
+        get() = _balanceError
 
     private val _saveFinished = SingleNotifyLiveData<Void?>()
     val saveFinished: LiveData<Void?>
@@ -34,23 +41,27 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
                 balance.postValue(account.balance)
             }
         }
+        name.observeForever { _nameError.value = null }
+        balance.observeForever { _balanceError.value = null }
     }
 
     fun save() {
-        executor.execute {
-            val account: Account =
-                if (uid != null) {
-                    val oldAccount = Repository.getAccount(uid)!!
-                    oldAccount.copy(
-                        name = name.value!!,
-                        balance = balance.value!!,
-                        updateDate = Calendar.getInstance()
-                    )
-                } else {
-                    Account(name = name.value!!, balance = balance.value!!)
-                }
-            Repository.saveAccount(account)
-            _saveFinished.postValue(null)
+        if (isValid()) {
+            executor.execute {
+                val account: Account =
+                    if (uid != null) {
+                        val oldAccount = Repository.getAccount(uid)!!
+                        oldAccount.copy(
+                            name = name.value!!,
+                            balance = balance.value!!,
+                            updateDate = Calendar.getInstance()
+                        )
+                    } else {
+                        Account(name = name.value!!, balance = balance.value!!)
+                    }
+                Repository.saveAccount(account)
+                _saveFinished.postValue(null)
+            }
         }
     }
 
@@ -66,6 +77,24 @@ class AccountViewViewModel(val uid: String?) : ViewModel() {
                 _saveFinished.postValue(null)
             }
         }
+    }
+
+    private fun isValid(): Boolean {
+        val name = this.name.value
+        val balance = this.balance.value
+
+        val isNameValid = name?.isNotEmpty() ?: false
+        val isBalanceValid = balance?.isNotZero() ?: false
+
+        if (!isNameValid) {
+            _nameError.value = R.string.required_field
+        }
+
+        if (!isBalanceValid) {
+            _balanceError.value = R.string.required_field
+        }
+
+        return isNameValid && isBalanceValid
     }
 
     class Factory(private val id: String?) : ViewModelProvider.Factory {

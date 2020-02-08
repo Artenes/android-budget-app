@@ -19,7 +19,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/name">
+            android:hint="@string/name"
+            app:error="@{viewModel.nameError}">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textInputName"
@@ -32,7 +33,8 @@
         <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/balance">
+            android:hint="@string/balance"
+            app:error="@{viewModel.balanceError}">
 
             <bok.artenes.budgetcontrol.money.MoneyTextInputEditText
                 android:id="@+id/textInputBalance"
@@ -56,7 +58,7 @@
             android:layout_height="wrap_content"
             android:onClick="@{() -> viewModel.confirmDelete()}"
             android:text="@string/delete"
-            android:visibility="@{viewModel.uid != null ? View.VISIBLE : View.GONE}" />
+            app:visibleWhen="@{viewModel.uid != null}" />
 
     </LinearLayout>
 
