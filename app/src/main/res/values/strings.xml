@@ -12,5 +12,6 @@
     <string name="select_a_date">Select a date</string>
     <string name="accounts">Accounts</string>
     <string name="no_accounts_created">No accounts created</string>
+    <string name="no_budgets_created">No budgets created</string>
     <string name="required_field">Required field</string>
 </resources>

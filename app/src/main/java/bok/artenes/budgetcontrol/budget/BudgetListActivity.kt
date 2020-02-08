@@ -4,6 +4,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
@@ -27,6 +28,8 @@ class BudgetListActivity : AppCompatActivity(), BudgetListAdapter.BudgetListList
         recyclerView.adapter = adapter
 
         viewModel.budgets.observe(this, Observer<List<BudgetItem>> {
+            textViewEmptyMessage.visibility = if (it.isEmpty()) View.VISIBLE else View.GONE
+            recyclerView.visibility = if (it.isNotEmpty()) View.VISIBLE else View.GONE
             adapter.submitList(it)
         })
 
