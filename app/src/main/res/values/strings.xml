@@ -8,7 +8,7 @@
     <string name="save">Save</string>
     <string name="delete">Delete</string>
     <string name="delete_account">Delete account?</string>
-    <string name="budgets_associated_with_this_account">Budgets associated with this account will stay untouched.</string>
+    <string name="budgets_associated_with_this_account">Budgets associated with this account will NOT be deleted.</string>
     <string name="select_a_date">Select a date</string>
     <string name="accounts">Accounts</string>
     <string name="no_accounts_created">No accounts created</string>
