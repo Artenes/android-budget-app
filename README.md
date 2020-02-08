@@ -1,6 +1,7 @@
 # TODO
 x validate fields
 x Account CRUD - 1 week (it was about 1 week)
+- add softdelete to accounts
 - Associate account in budget - 1 day
 - Choose if it is income or spense in budget - 1 day
 - Add validation to fields in budget creation - 2 days

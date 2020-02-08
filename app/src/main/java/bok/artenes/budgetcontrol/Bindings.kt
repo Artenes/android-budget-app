@@ -5,9 +5,11 @@ import androidx.databinding.BindingAdapter
 import androidx.databinding.InverseBindingAdapter
 import androidx.databinding.InverseBindingListener
 import androidx.lifecycle.LiveData
+import bok.artenes.budgetcontrol.date.DateTextInputEditText
 import bok.artenes.budgetcontrol.money.Money
 import bok.artenes.budgetcontrol.money.MoneyTextInputEditText
 import com.google.android.material.textfield.TextInputLayout
+import java.util.*
 
 object Bindings {
 
@@ -47,9 +49,33 @@ object Bindings {
 
     @BindingAdapter("app:valueAttrChanged")
     @JvmStatic
-    fun setListener(view: MoneyTextInputEditText, attrChange: InverseBindingListener) {
+    fun setValueListener(view: MoneyTextInputEditText, attrChange: InverseBindingListener) {
         view.listener = object : MoneyTextInputEditText.OnValueChangeListener {
             override fun onValueChanged(newValue: Money) {
+                attrChange.onChange()
+            }
+        }
+    }
+
+    @BindingAdapter("date")
+    @JvmStatic
+    fun setDate(view: DateTextInputEditText, newValue: Calendar?) {
+        if (view.date != newValue) {
+            view.date = newValue ?: Calendar.getInstance()
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "date")
+    @JvmStatic
+    fun getDate(view: DateTextInputEditText): Calendar {
+        return view.date
+    }
+
+    @BindingAdapter("app:dateAttrChanged")
+    @JvmStatic
+    fun setDateListener(view: DateTextInputEditText, attrChange: InverseBindingListener) {
+        view.listener = object : DateTextInputEditText.OnDateChangeListener {
+            override fun onDateChanged(newValue: Calendar) {
                 attrChange.onChange()
             }
         }

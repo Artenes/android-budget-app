@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+        <variable
+            name="viewModel"
+            type="bok.artenes.budgetcontrol.budget.BudgetViewViewModel" />
+    </data>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/description"
+            app:error="@{viewModel.descriptionError}">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/textInputDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@={viewModel.description}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/price"
+            app:error="@{viewModel.priceError}">
+
+            <bok.artenes.budgetcontrol.money.MoneyTextInputEditText
+                android:id="@+id/textInputPrice"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                app:value="@={viewModel.price}" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/date"
+            app:error="@{viewModel.dateError}">
+
+            <bok.artenes.budgetcontrol.date.DateTextInputEditText
+                android:id="@+id/textInputDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:date="@={viewModel.date}"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/buttonSave"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.save()}"
+            android:text="@string/save" />
+
+        <Button
+            android:id="@+id/buttonDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:onClick="@{() -> viewModel.confirmDelete()}"
+            android:text="@string/delete"
+            app:visibleWhen="@{!viewModel.isNew()}" />
+
+    </LinearLayout>
+</layout>

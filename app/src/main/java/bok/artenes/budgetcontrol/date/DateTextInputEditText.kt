@@ -22,10 +22,13 @@ class DateTextInputEditText : TextInputEditText, View.OnClickListener,
         set(value) {
             _date = value
             setFormattedDateOnField(value)
+            listener?.onDateChanged(value)
         }
 
     private val fragmentManager: FragmentManager
         get() = ((context as ContextThemeWrapper).baseContext as AppCompatActivity).supportFragmentManager
+
+    var listener: OnDateChangeListener? = null
 
     constructor(context: Context) : super(context)
 
@@ -99,6 +102,10 @@ class DateTextInputEditText : TextInputEditText, View.OnClickListener,
             }
         }
 
+    }
+
+    interface OnDateChangeListener {
+        fun onDateChanged(newValue: Calendar)
     }
 
     companion object {

@@ -21,10 +21,21 @@ object Repository {
         return database.budgetsDao().getAll()
     }
 
+    fun getBudget(uid: String): Budget? {
+        return database.budgetsDao().getBudget(uid)
+    }
+
     fun saveBudget(budget: Budget) {
-        executor.execute {
+        val exists = database.budgetsDao().getBudget(budget.uid) != null
+        if (exists) {
+            database.budgetsDao().update(budget)
+        } else {
             database.budgetsDao().insert(budget)
         }
+    }
+
+    fun deleteBudget(budget: Budget) {
+        database.budgetsDao().delete(budget)
     }
 
     fun getAccount(id: String): Account? {

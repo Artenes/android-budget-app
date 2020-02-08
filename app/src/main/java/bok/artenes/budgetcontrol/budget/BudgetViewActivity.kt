@@ -1,4 +1,4 @@
-package bok.artenes.budgetcontrol.account
+package bok.artenes.budgetcontrol.budget
 
 import android.content.Context
 import android.content.Intent
@@ -9,25 +9,27 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bok.artenes.budgetcontrol.ConfirmDeleteDialogFragment
 import bok.artenes.budgetcontrol.R
-import bok.artenes.budgetcontrol.databinding.ActivityAccountViewBinding
+import bok.artenes.budgetcontrol.databinding.ActivityBudgetViewBinding
+import kotlinx.android.synthetic.main.activity_budget_view.*
 
-class AccountViewActivity : AppCompatActivity(),
+class BudgetViewActivity : AppCompatActivity(),
     ConfirmDeleteDialogFragment.OnConfirmDeleteListener {
 
     private val accountUid: String?
         get() = intent?.extras?.getString(EXTRA_UID)
 
     private val viewModel by lazy {
-        val factory = AccountViewViewModel.Factory(accountUid)
-        ViewModelProviders.of(this, factory).get(AccountViewViewModel::class.java)
+        val factory = BudgetViewViewModel.Factory(accountUid)
+        ViewModelProviders.of(this, factory).get(BudgetViewViewModel::class.java)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_budget_view)
 
-        val binding = DataBindingUtil.setContentView<ActivityAccountViewBinding>(
+        val binding = DataBindingUtil.setContentView<ActivityBudgetViewBinding>(
             this,
-            R.layout.activity_account_view
+            R.layout.activity_budget_view
         )
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
@@ -39,17 +41,13 @@ class AccountViewActivity : AppCompatActivity(),
             dialog.show(supportFragmentManager, DIALOG_DELETE_TAG)
         })
 
-        restoreDeleteConfirmedListener()
+        buttonSave.setOnClickListener {
+            viewModel.save()
+        }
     }
 
     override fun onDeleteConfirmed() {
         viewModel.delete()
-    }
-
-    private fun restoreDeleteConfirmedListener() {
-        val dialog = supportFragmentManager
-            .findFragmentByTag(DIALOG_DELETE_TAG) as ConfirmDeleteDialogFragment?
-        dialog?.listener = this
     }
 
     companion object {
@@ -58,7 +56,7 @@ class AccountViewActivity : AppCompatActivity(),
         private const val DIALOG_DELETE_TAG = "DIALOG_DELETE_TAG"
 
         fun start(context: Context, uid: String? = null) {
-            val intent = Intent(context, AccountViewActivity::class.java)
+            val intent = Intent(context, BudgetViewActivity::class.java)
             intent.putExtra(EXTRA_UID, uid)
             context.startActivity(intent)
         }
