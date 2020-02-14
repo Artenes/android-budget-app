@@ -1,12 +1,10 @@
 package bok.artenes.budgetcontrol.budget
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.*
 import bok.artenes.budgetcontrol.R
 import bok.artenes.budgetcontrol.Repository
 import bok.artenes.budgetcontrol.SingleNotifyLiveData
+import bok.artenes.budgetcontrol.SpinnerItem
 import bok.artenes.budgetcontrol.money.Money
 import java.util.*
 import java.util.concurrent.Executors
@@ -14,6 +12,10 @@ import java.util.concurrent.Executors
 class BudgetViewViewModel(private val uid: String?) : ViewModel() {
 
     private val executor = Executors.newSingleThreadExecutor()
+
+    val accounts: LiveData<List<SpinnerItem>> = Transformations.map(Repository.getAccounts()) {
+        it.map { SpinnerItem(it.uid, it.name) }
+    }
 
     val description = MutableLiveData<String>()
     private val _descriptionError = MutableLiveData<Int>()
@@ -30,6 +32,11 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
     val dateError: LiveData<Int>
         get() = _dateError
 
+    val account = MutableLiveData<SpinnerItem>()
+    private val _accountError = MutableLiveData<Int>()
+    val accountError: LiveData<Int>
+        get() = _accountError
+
     private val _finishEdit = SingleNotifyLiveData<Void?>()
     val finishEdit: LiveData<Void?>
         get() = _finishEdit
@@ -39,8 +46,8 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
         get() = _confirmDeleteDialog
 
     init {
-        if (uid != null) {
-            executor.execute {
+        executor.execute {
+            if (uid != null) {
                 val budget = Repository.getBudget(uid) as Budget
                 description.postValue(budget.description)
                 price.postValue(budget.value)
@@ -50,6 +57,7 @@ class BudgetViewViewModel(private val uid: String?) : ViewModel() {
         description.observeForever { _descriptionError.value = null }
         price.observeForever { _priceError.value = null }
         date.observeForever { _dateError.value = null }
+        account.observeForever { _accountError.value = null }
     }
 
     fun isNew(): Boolean {

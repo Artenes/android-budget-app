@@ -3,6 +3,7 @@
     <string name="description">Description</string>
     <string name="name">Name</string>
     <string name="price">Price</string>
+    <string name="account">Account</string>
     <string name="balance">Balance</string>
     <string name="date">Date</string>
     <string name="save">Save</string>

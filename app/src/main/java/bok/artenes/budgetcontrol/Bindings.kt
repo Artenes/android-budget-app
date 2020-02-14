@@ -81,4 +81,28 @@ object Bindings {
         }
     }
 
+    @BindingAdapter("item")
+    @JvmStatic
+    fun setItem(view: SpinnerTextInputEditText, newValue: SpinnerItem?) {
+        if (view.selectedItem != newValue) {
+            view.selectedItem = newValue
+        }
+    }
+
+    @InverseBindingAdapter(attribute = "item")
+    @JvmStatic
+    fun getItem(view: SpinnerTextInputEditText): SpinnerItem? {
+        return view.selectedItem
+    }
+
+    @BindingAdapter("app:itemAttrChanged")
+    @JvmStatic
+    fun setItemListener(view: SpinnerTextInputEditText, attrChange: InverseBindingListener) {
+        view.listener = object : SpinnerTextInputEditText.OnItemChangeListener {
+            override fun onItemChanged(newItem: SpinnerItem?) {
+                attrChange.onChange()
+            }
+        }
+    }
+
 }

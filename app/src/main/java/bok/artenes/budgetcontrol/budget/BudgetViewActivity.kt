@@ -3,13 +3,19 @@ package bok.artenes.budgetcontrol.budget
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
+import android.view.MenuInflater
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import bok.artenes.budgetcontrol.ConfirmDeleteDialogFragment
 import bok.artenes.budgetcontrol.R
+import bok.artenes.budgetcontrol.SpinnerItem
 import bok.artenes.budgetcontrol.databinding.ActivityBudgetViewBinding
+import com.google.android.material.textfield.TextInputEditText
+import kotlinx.android.synthetic.main.activity_budget_view.*
 
 class BudgetViewActivity : AppCompatActivity(),
     ConfirmDeleteDialogFragment.OnConfirmDeleteListener {
@@ -24,7 +30,6 @@ class BudgetViewActivity : AppCompatActivity(),
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_budget_view)
 
         val binding = DataBindingUtil.setContentView<ActivityBudgetViewBinding>(
             this,
@@ -39,6 +44,12 @@ class BudgetViewActivity : AppCompatActivity(),
             dialog.listener = this
             dialog.show(supportFragmentManager, DIALOG_DELETE_TAG)
         })
+
+        textInputAccount.items = listOf(
+            SpinnerItem("adasad", "Account A"),
+            SpinnerItem("adasadasda", "Account B"),
+            SpinnerItem("adasadasdaasdads", "Account C")
+        )
 
         restoreDeleteConfirmedListener()
     }
